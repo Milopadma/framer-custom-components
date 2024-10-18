@@ -3,16 +3,24 @@
 
 import React, { useState } from "react";
 import { addPropertyControls, ControlType } from "framer";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface MailInputProps {
   nocodbApiToken: string;
-  title: string;
-  subtitle: string;
   placeholder: string;
   buttonLabel: string;
   buttonColor: string;
   backgroundColor: string;
   fontFamily: string;
+  isStackedLayout: boolean;
+  inputPaddingLeft: number;
+  inputPaddingRight: number;
+  inputPaddingTop: number;
+  inputPaddingBottom: number;
+  buttonPaddingLeft: number;
+  buttonPaddingRight: number;
+  buttonPaddingTop: number;
+  buttonPaddingBottom: number;
 }
 
 /**
@@ -24,13 +32,20 @@ interface MailInputProps {
  */
 export default function MailInput({
   nocodbApiToken,
-  title,
-  subtitle,
   placeholder,
   buttonLabel,
   buttonColor,
   backgroundColor,
   fontFamily,
+  inputPaddingLeft,
+  inputPaddingRight,
+  inputPaddingTop,
+  inputPaddingBottom,
+  buttonPaddingLeft,
+  buttonPaddingRight,
+  buttonPaddingTop,
+  buttonPaddingBottom,
+  isStackedLayout,
 }: MailInputProps): JSX.Element {
   const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -70,48 +85,84 @@ export default function MailInput({
   };
 
   return (
-    <div
-      style={{
-        ...containerStyle,
-        backgroundColor,
-        fontFamily: "Rouben Bold",
-      }}
-    >
-      <h1 style={titleStyle}>{title}</h1>
-      <p
-        style={subtitleStyle}
-        dangerouslySetInnerHTML={{
-          __html: subtitle.replace(/\*(.*?)\*/g, "<strong>$1</strong>"),
+    <div style={{ ...containerStyle, backgroundColor, fontFamily }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          ...formStyle,
+          flexDirection: isStackedLayout ? "column" : "row",
         }}
-      ></p>
-      <form onSubmit={handleSubmit} style={formStyle}>
-        <input
+      >
+        <motion.input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={{ ...inputStyle, fontFamily }}
+          style={{
+            ...inputStyle,
+            fontFamily,
+            paddingLeft: inputPaddingLeft,
+            paddingRight: inputPaddingRight,
+            paddingTop: inputPaddingTop,
+            paddingBottom: inputPaddingBottom,
+            width: isStackedLayout ? "100%" : "auto",
+          }}
           placeholder={placeholder}
+          whileFocus={{ scale: 1.02 }}
+          animate={{ flex: isLoading ? 0.7 : 1 }}
+          transition={{ duration: 0.3 }}
         />
-        <button
+        <motion.button
           type="submit"
           disabled={isLoading}
-          style={{ ...buttonStyle, backgroundColor: buttonColor, fontFamily }}
-        >
-          {isLoading ? "Submitting..." : buttonLabel}
-        </button>
-      </form>
-      {message && (
-        <p
           style={{
-            ...messageStyle,
-            color: message.includes("error") ? "#EF4444" : "#10B981",
+            ...buttonStyle,
+            backgroundColor: buttonColor,
             fontFamily,
+            paddingLeft: buttonPaddingLeft,
+            paddingRight: buttonPaddingRight,
+            paddingTop: buttonPaddingTop,
+            paddingBottom: buttonPaddingBottom,
+            width: isStackedLayout ? "100%" : "auto",
           }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          animate={{ flex: isLoading ? 0.3 : 0.2 }}
+          transition={{ duration: 0.5 }}
         >
-          {message}
-        </p>
-      )}
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={isLoading ? "submitting" : "submit"}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              style={{ textAlign: "left" }}
+            >
+              {isLoading ? "Submitting..." : buttonLabel}
+            </motion.span>
+          </AnimatePresence>
+        </motion.button>
+      </form>
+      <div style={messageContainerStyle}>
+        <AnimatePresence>
+          {message && (
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.3 }}
+              style={{
+                ...messageStyle,
+                color: message.includes("error") ? "#EF4444" : "#10B981",
+                fontFamily,
+              }}
+            >
+              {message}
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
@@ -121,17 +172,6 @@ addPropertyControls(MailInput, {
     type: ControlType.String,
     title: "NocoDB API Token",
     defaultValue: "",
-  },
-  title: {
-    type: ControlType.String,
-    title: "Title",
-    defaultValue: "sign up for beta app",
-  },
-  subtitle: {
-    type: ControlType.String,
-    title: "Subtitle",
-    defaultValue:
-      "let's find out what our attention is really worth—*together.*",
   },
   placeholder: {
     type: ControlType.String,
@@ -157,6 +197,75 @@ addPropertyControls(MailInput, {
     type: ControlType.Font,
     title: "Font Family",
   },
+  inputPaddingTop: {
+    type: ControlType.Number,
+    title: "Input Padding Top",
+    defaultValue: 16,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  inputPaddingBottom: {
+    type: ControlType.Number,
+    title: "Input Padding Bottom",
+    defaultValue: 16,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  inputPaddingLeft: {
+    type: ControlType.Number,
+    title: "Input Padding Left",
+    defaultValue: 24,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  inputPaddingRight: {
+    type: ControlType.Number,
+    title: "Input Padding Right",
+    defaultValue: 24,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  buttonPaddingTop: {
+    type: ControlType.Number,
+    title: "Button Padding Top",
+    defaultValue: 24,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  buttonPaddingBottom: {
+    type: ControlType.Number,
+    title: "Button Padding Bottom",
+    defaultValue: 24,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  buttonPaddingLeft: {
+    type: ControlType.Number,
+    title: "Button Padding Left",
+    defaultValue: 24,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  buttonPaddingRight: {
+    type: ControlType.Number,
+    title: "Button Padding Right",
+    defaultValue: 24,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  isStackedLayout: {
+    type: ControlType.Boolean,
+    title: "Stacked Layout",
+    defaultValue: false,
+  },
 });
 
 const containerStyle: React.CSSProperties = {
@@ -164,25 +273,11 @@ const containerStyle: React.CSSProperties = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  padding: "40px",
+  padding: "20px",
   borderRadius: "24px",
-  backdropFilter: "blur(10px)",
-  color: "white",
-  textAlign: "center",
   maxWidth: "600px",
+  width: "100%",
   margin: "0 auto",
-};
-
-const titleStyle: React.CSSProperties = {
-  fontSize: "32px",
-  fontWeight: "bold",
-  marginBottom: "8px",
-};
-
-const subtitleStyle: React.CSSProperties = {
-  fontSize: "16px",
-  marginBottom: "24px",
-  opacity: 0.8,
 };
 
 const formStyle: React.CSSProperties = {
@@ -192,8 +287,6 @@ const formStyle: React.CSSProperties = {
 };
 
 const inputStyle: React.CSSProperties = {
-  flex: 1,
-  padding: "12px 16px",
   borderRadius: "24px",
   border: "none",
   fontSize: "16px",
@@ -202,16 +295,25 @@ const inputStyle: React.CSSProperties = {
 };
 
 const buttonStyle: React.CSSProperties = {
-  padding: "12px 24px",
   borderRadius: "24px",
   border: "none",
   fontSize: "16px",
   fontWeight: "bold",
   color: "white",
   cursor: "pointer",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+};
+
+const messageContainerStyle: React.CSSProperties = {
+  height: "40px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
 };
 
 const messageStyle: React.CSSProperties = {
-  marginTop: "16px",
   fontSize: "14px",
+  textAlign: "center",
 };

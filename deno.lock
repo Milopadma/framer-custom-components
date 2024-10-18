@@ -6,6 +6,7 @@
     "npm:@types/react-dom@^18.3.1": "18.3.1",
     "npm:@types/react@^18.3.1": "18.3.11",
     "npm:@vitejs/plugin-react-swc@^3.7.1": "3.7.1_vite@5.4.9",
+    "npm:framer-motion@^11.11.9": "11.11.9_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:framer@^2.4.1": "2.4.1_framer-motion@10.18.0__react@18.3.1__react-dom@18.3.1___react@18.3.1_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:react-dom@^18.3.1": "18.3.1_react@18.3.1",
     "npm:react@^18.3.1": "18.3.1",
@@ -282,13 +283,21 @@
         "tslib"
       ]
     },
+    "framer-motion@11.11.9_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
+      "integrity": "sha512-XpdZseuCrZehdHGuW22zZt3SF5g6AHJHJi7JwQIigOznW4Jg1n0oGPMJQheMaKLC+0rp5gxUKMRYI6ytd3q4RQ==",
+      "dependencies": [
+        "react",
+        "react-dom",
+        "tslib"
+      ]
+    },
     "framer@2.4.1_framer-motion@10.18.0__react@18.3.1__react-dom@18.3.1___react@18.3.1_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
       "integrity": "sha512-kInsb+tmtNEvOeRa8wT2oRAl8Xe1L8ev4ahinB875Xh0zPBLt5Di6fuvBUILnDUU6mqmM+6QPiNxg62Va66V4Q==",
       "dependencies": [
         "@juggle/resize-observer",
         "eventemitter3",
         "fontfaceobserver",
-        "framer-motion",
+        "framer-motion@10.18.0_react@18.3.1_react-dom@18.3.1__react@18.3.1",
         "hoist-non-react-statics",
         "hsluv",
         "react",
