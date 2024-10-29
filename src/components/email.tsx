@@ -13,14 +13,11 @@ interface MailInputProps {
   backgroundColor: string;
   fontFamily: string;
   isStackedLayout: boolean;
-  inputPaddingLeft: number;
-  inputPaddingRight: number;
-  inputPaddingTop: number;
-  inputPaddingBottom: number;
-  buttonPaddingLeft: number;
-  buttonPaddingRight: number;
-  buttonPaddingTop: number;
-  buttonPaddingBottom: number;
+  inputPaddingX: number;
+  inputPaddingY: number;
+  buttonPaddingX: number;
+  buttonPaddingY: number;
+  buttonTextAlignment: "left" | "center" | "right";
 }
 
 /**
@@ -37,15 +34,12 @@ export default function MailInput({
   buttonColor,
   backgroundColor,
   fontFamily,
-  inputPaddingLeft,
-  inputPaddingRight,
-  inputPaddingTop,
-  inputPaddingBottom,
-  buttonPaddingLeft,
-  buttonPaddingRight,
-  buttonPaddingTop,
-  buttonPaddingBottom,
+  inputPaddingX,
+  inputPaddingY,
+  buttonPaddingX,
+  buttonPaddingY,
   isStackedLayout,
+  buttonTextAlignment = "center",
 }: MailInputProps): JSX.Element {
   const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -101,10 +95,10 @@ export default function MailInput({
           style={{
             ...inputStyle,
             fontFamily,
-            paddingLeft: inputPaddingLeft,
-            paddingRight: inputPaddingRight,
-            paddingTop: inputPaddingTop,
-            paddingBottom: inputPaddingBottom,
+            paddingLeft: inputPaddingX,
+            paddingRight: inputPaddingX,
+            paddingTop: inputPaddingY,
+            paddingBottom: inputPaddingY,
             width: isStackedLayout ? "100%" : "auto",
           }}
           placeholder={placeholder}
@@ -119,10 +113,10 @@ export default function MailInput({
             ...buttonStyle,
             backgroundColor: buttonColor,
             fontFamily,
-            paddingLeft: buttonPaddingLeft,
-            paddingRight: buttonPaddingRight,
-            paddingTop: buttonPaddingTop,
-            paddingBottom: buttonPaddingBottom,
+            paddingLeft: buttonPaddingX,
+            paddingRight: buttonPaddingX,
+            paddingTop: buttonPaddingY,
+            paddingBottom: buttonPaddingY,
             width: isStackedLayout ? "100%" : "auto",
           }}
           whileHover={{ scale: 1.05 }}
@@ -137,7 +131,10 @@ export default function MailInput({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              style={{ textAlign: "left" }}
+              style={{
+                width: "100%",
+                textAlign: buttonTextAlignment,
+              }}
             >
               {isLoading ? "Submitting..." : buttonLabel}
             </motion.span>
@@ -197,65 +194,33 @@ addPropertyControls(MailInput, {
     type: ControlType.Font,
     title: "Font Family",
   },
-  inputPaddingTop: {
+  inputPaddingX: {
     type: ControlType.Number,
-    title: "Input Padding Top",
+    title: "Input Padding X",
+    defaultValue: 24,
+    min: 0,
+    max: 100,
+    step: 1,
+  },
+  inputPaddingY: {
+    type: ControlType.Number,
+    title: "Input Padding Y",
     defaultValue: 16,
     min: 0,
     max: 100,
     step: 1,
   },
-  inputPaddingBottom: {
+  buttonPaddingX: {
     type: ControlType.Number,
-    title: "Input Padding Bottom",
-    defaultValue: 16,
-    min: 0,
-    max: 100,
-    step: 1,
-  },
-  inputPaddingLeft: {
-    type: ControlType.Number,
-    title: "Input Padding Left",
+    title: "Button Padding X",
     defaultValue: 24,
     min: 0,
     max: 100,
     step: 1,
   },
-  inputPaddingRight: {
+  buttonPaddingY: {
     type: ControlType.Number,
-    title: "Input Padding Right",
-    defaultValue: 24,
-    min: 0,
-    max: 100,
-    step: 1,
-  },
-  buttonPaddingTop: {
-    type: ControlType.Number,
-    title: "Button Padding Top",
-    defaultValue: 24,
-    min: 0,
-    max: 100,
-    step: 1,
-  },
-  buttonPaddingBottom: {
-    type: ControlType.Number,
-    title: "Button Padding Bottom",
-    defaultValue: 24,
-    min: 0,
-    max: 100,
-    step: 1,
-  },
-  buttonPaddingLeft: {
-    type: ControlType.Number,
-    title: "Button Padding Left",
-    defaultValue: 24,
-    min: 0,
-    max: 100,
-    step: 1,
-  },
-  buttonPaddingRight: {
-    type: ControlType.Number,
-    title: "Button Padding Right",
+    title: "Button Padding Y",
     defaultValue: 24,
     min: 0,
     max: 100,
@@ -265,6 +230,12 @@ addPropertyControls(MailInput, {
     type: ControlType.Boolean,
     title: "Stacked Layout",
     defaultValue: false,
+  },
+  buttonTextAlignment: {
+    type: ControlType.Enum,
+    title: "Button Text Alignment",
+    options: ["left", "center", "right"],
+    defaultValue: "center",
   },
 });
 
@@ -292,9 +263,13 @@ const inputStyle: React.CSSProperties = {
   fontSize: "16px",
   backgroundColor: "rgba(255,255,255,0.1)",
   color: "white",
+  minWidth: "100px",
 };
 
 const buttonStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
   borderRadius: "24px",
   border: "none",
   fontSize: "16px",
@@ -303,6 +278,8 @@ const buttonStyle: React.CSSProperties = {
   cursor: "pointer",
   overflow: "hidden",
   whiteSpace: "nowrap",
+  minWidth: "140px",
+  textAlign: "center",
 };
 
 const messageContainerStyle: React.CSSProperties = {
