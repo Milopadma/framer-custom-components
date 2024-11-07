@@ -36,6 +36,13 @@ interface Product {
   availableForSale: boolean;
 }
 
+interface ProductModalProps {
+  product: Product;
+  onClose: () => void;
+  accentColor: string;
+  textColor: string;
+}
+
 const getGridColumns = (itemsPerRow: number, width: number): number => {
   if (width < 640) return 1; 
   if (width < 1024) return 2; 
@@ -59,6 +66,142 @@ const randomLoadingMessage = (): string => {
   return LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)];
 };
 
+const ProductModal = ({ product, onClose, accentColor, textColor }: ProductModalProps): JSX.Element => {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem',
+        zIndex: 1000,
+      }}
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        transition={{ type: "spring", damping: 25, stiffness: 400 }}
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: 'white',
+          borderRadius: '0.75rem',
+          width: '100%',
+          maxWidth: '32rem',
+          maxHeight: '90vh',
+          overflow: 'auto',
+          position: 'relative'
+        }}
+      >
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr' }}>
+          <div style={{ position: 'relative', paddingTop: '100%' }}>
+            <img
+              src={product.images.edges[0]?.node.url}
+              alt={product.images.edges[0]?.node.altText ?? product.title}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+              }}
+            />
+          </div>
+          <div style={{ padding: '1.5rem' }}>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              alignItems: 'start',
+              marginBottom: '1rem'
+            }}>
+              <h2 style={{ 
+                color: textColor,
+                fontSize: '1.5rem',
+                fontWeight: 600,
+                margin: 0
+              }}>
+                {product.title}
+              </h2>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={onClose}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: '0.5rem',
+                  cursor: 'pointer',
+                  borderRadius: '9999px'
+                }}
+              >
+                ✕
+              </motion.button>
+            </div>
+            <p style={{ 
+              color: accentColor,
+              fontSize: '1.25rem',
+              fontWeight: 'bold',
+              marginBottom: '1rem'
+            }}>
+              {`${product.priceRange.minVariantPrice.currencyCode} ${product.priceRange.minVariantPrice.amount}`}
+            </p>
+            <div 
+              style={{ 
+                marginBottom: '1.5rem',
+                color: textColor,
+                lineHeight: 1.5
+              }}
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            />
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              style={{
+                backgroundColor: accentColor,
+                color: 'white',
+                padding: '0.75rem 1rem',
+                width: '100%',
+                border: 'none',
+                borderRadius: '0.5rem',
+                fontSize: '1rem',
+                fontWeight: 500,
+                cursor: 'pointer'
+              }}
+            >
+              {product.availableForSale ? 'Add to Cart' : 'Sold Out'}
+            </motion.button>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 export default function ShopifyProducts({
   backgroundColor,
   fontFamily,
@@ -72,6 +215,7 @@ export default function ShopifyProducts({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [windowWidth, setWindowWidth] = useState<number>(1200); 
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     const handleResize = (): void => {
@@ -331,6 +475,7 @@ export default function ShopifyProducts({
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
+                        onClick={() => setSelectedProduct(product)}
                         style={{
                           backgroundColor: accentColor,
                           color: 'white',
@@ -353,6 +498,16 @@ export default function ShopifyProducts({
           </motion.div>
         )}
       </div>
+      <AnimatePresence>
+        {selectedProduct && (
+          <ProductModal
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+            accentColor={accentColor}
+            textColor={textColor}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
