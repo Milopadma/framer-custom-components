@@ -1,0 +1,6 @@
+- marquee text animation like https://redact-a-chat.com/#/
+- acii video like https://yannickgregoire.nl
+- text being scrambled
+- text being typed like in terminal / command line***
+- awge.com style monitor frame
+- crt style static
