@@ -404,6 +404,14 @@
       ]
     }
   },
+  "redirects": {
+    "https://framer.com/m/framer/store.js@^1.0.0": "https://framerusercontent.com/modules/vj7bFUjvEQFgEzNBkdoG/vf3CKm378wlVcBk7IhSU/createStore.js",
+    "https://framer.com/m/framer/utils.js@^0.9.0": "https://framerusercontent.com/modules/28rXvpPsrum7FH6cMELS/1jCAazZw1EGHjrG5Nu5D/Utils.js"
+  },
+  "remote": {
+    "https://framerusercontent.com/modules/28rXvpPsrum7FH6cMELS/1jCAazZw1EGHjrG5Nu5D/Utils.js": "42972a7c6a8f1efe3016956e0a7aae98d8412b248e1f2adef996e0560ef7d987",
+    "https://framerusercontent.com/modules/vj7bFUjvEQFgEzNBkdoG/vf3CKm378wlVcBk7IhSU/createStore.js": "f562da0a6f6b313a32104164431bf61bf4608112f9c0dad2e38b9de4fe8957dc"
+  },
   "workspace": {
     "dependencies": [
       "npm:@deno/vite-plugin@1",
