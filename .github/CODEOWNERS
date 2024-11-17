@@ -1,0 +1,14 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# they will be requested for review when someone opens a pull request.
+* @repository-owner
+
+# Animation components
+/animations/ @repository-owner
+
+# Core components 
+/src/components/ @repository-owner
+
+# Configuration files
+*.json @repository-owner
+*.config.* @repository-owner 
