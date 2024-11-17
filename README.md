@@ -1,9 +1,12 @@
-# Retro CRT Monitor Effects
+# Framer Custom Components
 
-A collection of retro CRT monitor effects and animations built with React, TypeScript, and Framer Motion.
+A collection of custom components for Framer Motion.
 
-## Features
-
+- ⚡️ Vite for lightning fast builds
+- 🦕 Deno for secure runtime
+- ⚛️ React for UI
+- 📝 TypeScript for type safety
+- 🎭 Framer Motion for animations
 - 🎨 Custom animation components:
   - CRT Monitor effect
   - Glitch text effects
@@ -28,20 +31,6 @@ A collection of retro CRT monitor effects and animations built with React, TypeS
 2. Clone this repository
 3. Run development server: `deno task dev`
 4. Build for production: `deno task build`
-
-## Components
-
-- CrtMonitor: Wrap any content in a retro CRT monitor effect
-- VideoToAscii: Convert video to ASCII art in real-time
-- GlitchText: Apply matrix-style text glitch animations
-- MarqueeText: Create scrolling text animations
-- ShopifyProducts: Display products from your Shopify store
-- YouTubeFeed: Show latest videos from a YouTube channel
-- MailInput: Collect email subscriptions with animations
-
-## Contributing
-
-Pull requests welcome! Please read CONTRIBUTING.md first.
 
 ## License
 
