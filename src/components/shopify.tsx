@@ -44,9 +44,9 @@ interface ProductModalProps {
 }
 
 const getGridColumns = (itemsPerRow: number, width: number): number => {
-  if (width < 640) return 1; 
-  if (width < 1024) return 2; 
-  return itemsPerRow; 
+  if (width < 640) return 1;
+  if (width < 1024) return 2;
+  return itemsPerRow;
 };
 
 const LOADING_MESSAGES: string[] = [
@@ -59,25 +59,30 @@ const LOADING_MESSAGES: string[] = [
   "Polishing product images to perfection...",
   "Negotiating with the API gods...",
   "Calculating best deals in parallel universes...",
-  "Untangling the web of products..."
+  "Untangling the web of products...",
 ];
 
 const randomLoadingMessage = (): string => {
   return LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)];
 };
 
-const ProductModal = ({ product, onClose, accentColor, textColor }: ProductModalProps): JSX.Element => {
+const ProductModal = ({
+  product,
+  onClose,
+  accentColor,
+  textColor,
+}: ProductModalProps): JSX.Element => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent): void => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
-    window.addEventListener('keydown', handleEscape);
-    
+    window.addEventListener("keydown", handleEscape);
+
     return () => {
-      window.removeEventListener('keydown', handleEscape);
+      window.removeEventListener("keydown", handleEscape);
     };
   }, [onClose]);
 
@@ -87,16 +92,16 @@ const ProductModal = ({ product, onClose, accentColor, textColor }: ProductModal
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       style={{
-        position: 'fixed',
+        position: "fixed",
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        background: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '1rem',
+        background: "rgba(0, 0, 0, 0.5)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "1rem",
         zIndex: 1000,
       }}
       onClick={onClose}
@@ -108,43 +113,47 @@ const ProductModal = ({ product, onClose, accentColor, textColor }: ProductModal
         transition={{ type: "spring", damping: 25, stiffness: 400 }}
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: 'white',
-          borderRadius: '0.75rem',
-          width: '100%',
-          maxWidth: '32rem',
-          maxHeight: '90vh',
-          overflow: 'auto',
-          position: 'relative'
+          background: "white",
+          borderRadius: "0.75rem",
+          width: "100%",
+          maxWidth: "32rem",
+          maxHeight: "90vh",
+          overflow: "auto",
+          position: "relative",
         }}
       >
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr' }}>
-          <div style={{ position: 'relative', paddingTop: '100%' }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr" }}>
+          <div style={{ position: "relative", paddingTop: "100%" }}>
             <img
               src={product.images.edges[0]?.node.url}
               alt={product.images.edges[0]?.node.altText ?? product.title}
               style={{
-                position: 'absolute',
+                position: "absolute",
                 top: 0,
                 left: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover'
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
               }}
             />
           </div>
-          <div style={{ padding: '1.5rem' }}>
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'start',
-              marginBottom: '1rem'
-            }}>
-              <h2 style={{ 
-                color: textColor,
-                fontSize: '1.5rem',
-                fontWeight: 600,
-                margin: 0
-              }}>
+          <div style={{ padding: "1.5rem" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "start",
+                marginBottom: "1rem",
+              }}
+            >
+              <h2
+                style={{
+                  color: textColor,
+                  fontSize: "1.5rem",
+                  fontWeight: 600,
+                  margin: 0,
+                }}
+              >
                 {product.title}
               </h2>
               <motion.button
@@ -152,29 +161,31 @@ const ProductModal = ({ product, onClose, accentColor, textColor }: ProductModal
                 whileTap={{ scale: 0.95 }}
                 onClick={onClose}
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  padding: '0.5rem',
-                  cursor: 'pointer',
-                  borderRadius: '9999px'
+                  background: "none",
+                  border: "none",
+                  padding: "0.5rem",
+                  cursor: "pointer",
+                  borderRadius: "9999px",
                 }}
               >
                 ✕
               </motion.button>
             </div>
-            <p style={{ 
-              color: accentColor,
-              fontSize: '1.25rem',
-              fontWeight: 'bold',
-              marginBottom: '1rem'
-            }}>
+            <p
+              style={{
+                color: accentColor,
+                fontSize: "1.25rem",
+                fontWeight: "bold",
+                marginBottom: "1rem",
+              }}
+            >
               {`${product.priceRange.minVariantPrice.currencyCode} ${product.priceRange.minVariantPrice.amount}`}
             </p>
-            <div 
-              style={{ 
-                marginBottom: '1.5rem',
+            <div
+              style={{
+                marginBottom: "1.5rem",
                 color: textColor,
-                lineHeight: 1.5
+                lineHeight: 1.5,
               }}
               dangerouslySetInnerHTML={{ __html: product.description }}
             />
@@ -183,17 +194,17 @@ const ProductModal = ({ product, onClose, accentColor, textColor }: ProductModal
               whileTap={{ scale: 0.98 }}
               style={{
                 backgroundColor: accentColor,
-                color: 'white',
-                padding: '0.75rem 1rem',
-                width: '100%',
-                border: 'none',
-                borderRadius: '0.5rem',
-                fontSize: '1rem',
+                color: "white",
+                padding: "0.75rem 1rem",
+                width: "100%",
+                border: "none",
+                borderRadius: "0.5rem",
+                fontSize: "1rem",
                 fontWeight: 500,
-                cursor: 'pointer'
+                cursor: "pointer",
               }}
             >
-              {product.availableForSale ? 'Add to Cart' : 'Sold Out'}
+              {product.availableForSale ? "Add to Cart" : "Sold Out"}
             </motion.button>
           </div>
         </div>
@@ -214,7 +225,7 @@ export default function ShopifyProducts({
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-  const [windowWidth, setWindowWidth] = useState<number>(1200); 
+  const [windowWidth, setWindowWidth] = useState<number>(1200);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
@@ -224,8 +235,8 @@ export default function ShopifyProducts({
 
     handleResize();
 
-    globalThis.addEventListener('resize', handleResize);
-    return () => globalThis.removeEventListener('resize', handleResize);
+    globalThis.addEventListener("resize", handleResize);
+    return () => globalThis.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -238,25 +249,28 @@ export default function ShopifyProducts({
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              "X-Shopify-Access-Token": adminApiAccessToken
-            }
+              "X-Shopify-Access-Token": adminApiAccessToken,
+            },
           }
         );
 
         console.log("DEBUG Shopify response status:", response.status);
-        console.log("DEBUG Shopify response headers:", Object.fromEntries(response.headers));
+        console.log(
+          "DEBUG Shopify response headers:",
+          Object.fromEntries(response.headers)
+        );
 
         if (!response.ok) {
-          const errorText = await response.text(); 
+          const errorText = await response.text();
           console.log("DEBUG Shopify error response text:", errorText);
-          
+
           try {
             const errorData = JSON.parse(errorText);
             console.log("DEBUG Shopify error data:", errorData);
           } catch (e) {
             console.log("DEBUG Shopify error parsing failed:", e);
           }
-          
+
           throw new Error(`Failed to fetch products: ${response.statusText}`);
         }
 
@@ -273,21 +287,21 @@ export default function ShopifyProducts({
             priceRange: {
               minVariantPrice: {
                 amount: product.variants[0]?.price ?? "0",
-                currencyCode: "USD"
-              }
+                currencyCode: "USD",
+              },
             },
             images: {
               edges: product.images.map((image: any) => ({
                 node: {
                   url: image.src,
-                  altText: image.alt ?? product.title
-                }
-              }))
+                  altText: image.alt ?? product.title,
+                },
+              })),
             },
-            availableForSale: product.variants.some((v: any) => 
-              v.inventory_quantity > 0 && 
-              v.inventory_management === "shopify"
-            )
+            availableForSale: product.variants.some(
+              (v: any) =>
+                v.inventory_quantity > 0 && v.inventory_management === "shopify"
+            ),
           }));
 
         setProducts(transformedProducts);
@@ -303,20 +317,24 @@ export default function ShopifyProducts({
   }, [storeUrl, adminApiAccessToken]);
 
   return (
-    <div style={{ 
-      width: '100%', 
-      height: '100%',
-      backgroundColor: backgroundColor,
-      fontFamily: fontFamily,
-      padding: windowWidth < 640 ? '1rem' : '2rem',
-      overflowY: 'auto', 
-      WebkitOverflowScrolling: 'touch' 
-    }}>
-      <div style={{ 
-        maxWidth: '1200px', 
-        margin: '0 auto',
-        minHeight: '100%'
-      }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        backgroundColor: backgroundColor,
+        fontFamily: fontFamily,
+        padding: windowWidth < 640 ? "1rem" : "2rem",
+        overflowY: "auto",
+        WebkitOverflowScrolling: "touch",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          minHeight: "100%",
+        }}
+      >
         {loading ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -326,38 +344,38 @@ export default function ShopifyProducts({
             <div className="flex flex-col items-center justify-center w-full max-w-md">
               <motion.div
                 style={{
-                  width: '100%',
-                  height: '4px',
-                  background: '#e5e7eb',
-                  borderRadius: '2px',
-                  overflow: 'hidden'
+                  width: "100%",
+                  height: "4px",
+                  background: "#e5e7eb",
+                  borderRadius: "2px",
+                  overflow: "hidden",
                 }}
               >
                 <motion.div
-                  initial={{ width: '0%' }}
-                  animate={{ 
-                    width: '100%',
+                  initial={{ width: "0%" }}
+                  animate={{
+                    width: "100%",
                     transition: {
                       duration: 1.5,
                       ease: "easeInOut",
-                      repeat: Infinity
-                    }
+                      repeat: Infinity,
+                    },
                   }}
                   style={{
-                    height: '100%',
+                    height: "100%",
                     background: accentColor,
-                    borderRadius: '2px'
+                    borderRadius: "2px",
                   }}
                 />
               </motion.div>
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                style={{ 
-                  color: textColor, 
-                  marginTop: '1rem',
-                  letterSpacing: '-0.05em',
-                  textAlign: 'center'
+                style={{
+                  color: textColor,
+                  marginTop: "1rem",
+                  letterSpacing: "-0.05em",
+                  textAlign: "center",
                 }}
               >
                 {randomLoadingMessage()}
@@ -369,21 +387,24 @@ export default function ShopifyProducts({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             style={{
-              backgroundColor: '#FEE2E2',
-              padding: '1rem',
-              borderRadius: '0.5rem'
+              backgroundColor: "#FEE2E2",
+              padding: "1rem",
+              borderRadius: "0.5rem",
             }}
           >
-            <p style={{ color: '#EF4444', textAlign: 'center' }}>{error}</p>
+            <p style={{ color: "#EF4444", textAlign: "center" }}>{error}</p>
           </motion.div>
         ) : (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             style={{
-              display: 'grid',
-              gridTemplateColumns: `repeat(${getGridColumns(itemsPerRow, windowWidth)}, 1fr)`,
-              gap: windowWidth < 640 ? '1rem' : '1.5rem'
+              display: "grid",
+              gridTemplateColumns: `repeat(${getGridColumns(
+                itemsPerRow,
+                windowWidth
+              )}, 1fr)`,
+              gap: windowWidth < 640 ? "1rem" : "1.5rem",
             }}
           >
             <AnimatePresence>
@@ -391,39 +412,50 @@ export default function ShopifyProducts({
                 <motion.div
                   key={product.id}
                   initial={{ opacity: 0, y: 20 }}
-                  animate={{ 
-                    opacity: 1, 
+                  animate={{
+                    opacity: 1,
                     y: 0,
                     transition: {
                       delay: index * 0.1,
                       duration: 0.3,
-                      ease: [0.25, 0.1, 0.25, 1]
-                    }
+                      ease: [0.25, 0.1, 0.25, 1],
+                    },
                   }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   style={{
-                    backgroundColor: 'white',
-                    borderRadius: '0.75rem',
-                    overflow: 'hidden',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                    backgroundColor: "white",
+                    borderRadius: "0.75rem",
+                    overflow: "hidden",
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
                   }}
                 >
-                  <div style={{ position: 'relative', paddingTop: '100%', overflow: 'hidden' }}>
+                  <div
+                    style={{
+                      position: "relative",
+                      paddingTop: "100%",
+                      overflow: "hidden",
+                    }}
+                  >
                     {product.images.edges[0] && (
                       <motion.img
                         src={product.images.edges[0].node.url}
-                        alt={product.images.edges[0].node.altText ?? product.title}
+                        alt={
+                          product.images.edges[0].node.altText ?? product.title
+                        }
                         style={{
-                          position: 'absolute',
+                          position: "absolute",
                           top: 0,
                           left: 0,
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover'
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
                         }}
-                        whileHover={{ 
+                        whileHover={{
                           scale: 1.1,
-                          transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }
+                          transition: {
+                            duration: 0.3,
+                            ease: [0.25, 0.1, 0.25, 1],
+                          },
                         }}
                       />
                     )}
@@ -432,44 +464,50 @@ export default function ShopifyProducts({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         style={{
-                          position: 'absolute',
-                          top: '1rem',
-                          right: '1rem',
-                          backgroundColor: '#EF4444',
-                          color: 'white',
-                          padding: '0.25rem 0.75rem',
-                          borderRadius: '9999px',
-                          fontSize: '0.875rem',
-                          fontWeight: 500
+                          position: "absolute",
+                          top: "1rem",
+                          right: "1rem",
+                          backgroundColor: "#EF4444",
+                          color: "white",
+                          padding: "0.25rem 0.75rem",
+                          borderRadius: "9999px",
+                          fontSize: "0.875rem",
+                          fontWeight: 500,
                         }}
                       >
                         Sold Out
                       </motion.div>
                     )}
                   </div>
-                  <div style={{ padding: '1rem' }}>
-                    <h3 style={{ 
-                      color: textColor,
-                      marginBottom: '0.5rem',
-                      fontSize: windowWidth < 640 ? '0.875rem' : '1rem',
-                      fontWeight: 500,
-                      letterSpacing: '-0.01em'
-                    }}>
+                  <div style={{ padding: "1rem" }}>
+                    <h3
+                      style={{
+                        color: textColor,
+                        marginBottom: "0.5rem",
+                        fontSize: windowWidth < 640 ? "0.875rem" : "1rem",
+                        fontWeight: 500,
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
                       {product.title}
                     </h3>
-                    <div style={{
-                      display: 'flex',
-                      flexDirection: windowWidth < 640 ? 'column' : 'row',
-                      alignItems: windowWidth < 640 ? 'stretch' : 'center',
-                      justifyContent: 'space-between',
-                      gap: windowWidth < 640 ? '0.75rem' : '0'
-                    }}>
-                      <p style={{ 
-                        color: accentColor,
-                        fontSize: windowWidth < 640 ? '1rem' : '1.125rem',
-                        fontWeight: 'bold',
-                        textAlign: windowWidth < 640 ? 'center' : 'left'
-                      }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: windowWidth < 640 ? "column" : "row",
+                        alignItems: windowWidth < 640 ? "stretch" : "center",
+                        justifyContent: "space-between",
+                        gap: windowWidth < 640 ? "0.75rem" : "0",
+                      }}
+                    >
+                      <p
+                        style={{
+                          color: accentColor,
+                          fontSize: windowWidth < 640 ? "1rem" : "1.125rem",
+                          fontWeight: "bold",
+                          textAlign: windowWidth < 640 ? "center" : "left",
+                        }}
+                      >
                         {`${product.priceRange.minVariantPrice.currencyCode} ${product.priceRange.minVariantPrice.amount}`}
                       </p>
                       <motion.button
@@ -478,14 +516,14 @@ export default function ShopifyProducts({
                         onClick={() => setSelectedProduct(product)}
                         style={{
                           backgroundColor: accentColor,
-                          color: 'white',
-                          padding: '0.5rem 1rem',
-                          borderRadius: '0.5rem',
-                          fontSize: '0.875rem',
+                          color: "white",
+                          padding: "0.5rem 1rem",
+                          borderRadius: "0.5rem",
+                          fontSize: "0.875rem",
                           fontWeight: 500,
-                          border: 'none',
-                          cursor: 'pointer',
-                          width: windowWidth < 640 ? '100%' : 'auto'
+                          border: "none",
+                          cursor: "pointer",
+                          width: windowWidth < 640 ? "100%" : "auto",
                         }}
                       >
                         View Details
@@ -517,13 +555,15 @@ addPropertyControls(ShopifyProducts, {
     type: ControlType.String,
     title: "Store URL",
     defaultValue: "quickstart-c79c59ef.myshopify.com",
-    description: "Enter your Shopify store URL here. For example: quickstart-c79c59ef.myshopify.com",
+    description:
+      "Enter your Shopify store URL here. For example: quickstart-c79c59ef.myshopify.com",
   },
   adminApiAccessToken: {
     type: ControlType.String,
     title: "Admin API Access Token",
     defaultValue: "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",
-    description: "Enter your Shopify admin API access token here. It should start with 'shpat_'.",
+    description:
+      "Enter your Shopify admin API access token here. It should start with 'shpat_'.",
   },
   backgroundColor: {
     type: ControlType.Color,

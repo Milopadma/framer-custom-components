@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import { addPropertyControls, ControlType } from "framer";
 
 interface MarqueeTextProps {
