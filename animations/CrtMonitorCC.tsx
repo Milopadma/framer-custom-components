@@ -8,6 +8,11 @@ interface CrtMonitorProps {
   bezelImage?: string;
   horizontalBezelScale?: number;
   verticalBezelScale?: number;
+  bezelSizeUnit?: "px" | "%";
+  bezelWidth?: number;
+  bezelHeight?: number;
+  movingScanlineHeight?: number;
+  staticScanlineHeight?: number;
 }
 
 export function CrtMonitor({
@@ -16,6 +21,11 @@ export function CrtMonitor({
   bezelImage,
   horizontalBezelScale = 32,
   verticalBezelScale = 32,
+  bezelSizeUnit = "px",
+  bezelWidth = 100,
+  bezelHeight = 100,
+  movingScanlineHeight = 2,
+  staticScanlineHeight = 4,
 }: CrtMonitorProps): JSX.Element {
   return (
     <div
@@ -28,8 +38,9 @@ export function CrtMonitor({
         padding: `${verticalBezelScale}px ${horizontalBezelScale}px`,
         ...(bezelImage && {
           backgroundImage: `url(${bezelImage})`,
-          backgroundSize: "cover",
+          backgroundSize: `${bezelWidth}${bezelSizeUnit} ${bezelHeight}${bezelSizeUnit}`,
           backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }),
       }}
     >
@@ -54,7 +65,7 @@ export function CrtMonitor({
 
             .scanlines:before {
               width: 100%;
-              height: 2px;
+              height: ${movingScanlineHeight}px;
               z-index: 2147483649;
               background: rgba(0, 0, 0, ${scanlineOpacity});
               animation: scan-moving 6s linear infinite;
@@ -71,7 +82,7 @@ export function CrtMonitor({
                 transparent 50%,
                 rgba(0, 0, 0, ${scanlineOpacity}) 51%
               );
-              background-size: 100% 4px;
+              background-size: 100% ${staticScanlineHeight}px;
               animation: scan-crt 1s steps(60) infinite;
             }
 
@@ -128,6 +139,30 @@ addPropertyControls(CrtMonitor, {
     type: ControlType.Image,
     title: "Bezel Image",
   },
+  bezelSizeUnit: {
+    type: ControlType.Enum,
+    title: "Bezel Size Unit",
+    options: ["px", "%"],
+    defaultValue: "px",
+  },
+  bezelWidth: {
+    type: ControlType.Number,
+    title: "Bezel Width",
+    defaultValue: 100,
+    min: 0,
+    max: 2000,
+    step: 1,
+    displayStepper: true,
+  },
+  bezelHeight: {
+    type: ControlType.Number,
+    title: "Bezel Height",
+    defaultValue: 100,
+    min: 0,
+    max: 2000,
+    step: 1,
+    displayStepper: true,
+  },
   horizontalBezelScale: {
     type: ControlType.Number,
     title: "Horizontal Bezel Scale",
@@ -153,5 +188,23 @@ addPropertyControls(CrtMonitor, {
     min: 0,
     max: 1,
     step: 0.05,
+  },
+  movingScanlineHeight: {
+    type: ControlType.Number,
+    title: "Moving Scanline Height",
+    defaultValue: 2,
+    min: 1,
+    max: 20,
+    step: 1,
+    displayStepper: true,
+  },
+  staticScanlineHeight: {
+    type: ControlType.Number,
+    title: "Static Scanline Height",
+    defaultValue: 4,
+    min: 1,
+    max: 20,
+    step: 1,
+    displayStepper: true,
   },
 });
