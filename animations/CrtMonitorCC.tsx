@@ -2,6 +2,8 @@ import type { ComponentType } from "react";
 import { useState } from "react";
 import { addPropertyControls, ControlType } from "framer";
 
+// This one is probably the most recent and best verison for the CRT Monitor effect.
+
 interface CrtMonitorProps {
   children: React.ReactNode;
   scanlineOpacity?: number;
@@ -36,6 +38,7 @@ export function CrtMonitor({
         display: "flex",
         flexDirection: "column",
         padding: `${verticalBezelScale}px ${horizontalBezelScale}px`,
+        position: "relative",
         ...(bezelImage && {
           backgroundImage: `url(${bezelImage})`,
           backgroundSize: `${bezelWidth}${bezelSizeUnit} ${bezelHeight}${bezelSizeUnit}`,
@@ -51,6 +54,7 @@ export function CrtMonitor({
           minHeight: 0,
           position: "relative",
           backgroundColor: "transparent",
+          zIndex: -1,
         }}
       >
         <style>
@@ -66,7 +70,7 @@ export function CrtMonitor({
             .scanlines:before {
               width: 100%;
               height: ${movingScanlineHeight}px;
-              z-index: 2147483649;
+              z-index: -1;
               background: rgba(0, 0, 0, ${scanlineOpacity});
               animation: scan-moving 6s linear infinite;
             }
@@ -76,7 +80,7 @@ export function CrtMonitor({
               right: 0;
               bottom: 0;
               left: 0;
-              z-index: 2147483648;
+              z-index: -1;
               background: linear-gradient(
                 to bottom,
                 transparent 50%,
