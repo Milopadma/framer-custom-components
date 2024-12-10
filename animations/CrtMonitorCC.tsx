@@ -3,6 +3,7 @@ import { useState } from "react";
 import { addPropertyControls, ControlType } from "framer";
 
 // This one is probably the most recent and best verison for the CRT Monitor effect.
+// - milo
 
 interface CrtMonitorProps {
   children: React.ReactNode;
@@ -41,7 +42,7 @@ export function CrtMonitor({
         position: "relative",
         ...(bezelImage && {
           backgroundImage: `url(${bezelImage})`,
-          backgroundSize: `${bezelWidth}${bezelSizeUnit} ${bezelHeight}${bezelSizeUnit}`,
+          backgroundSize: "100% 100%",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }),
